@@ -6,9 +6,12 @@
   flex-direction:column;
   background-color:white;
   color:black;
+  overflow:hidden;
 }
 
 .header, .footer {
+  display:flex;
+  flex-direction:row;
   width:100%;
   height:10%;
   border: 2px solid #c8c8c8;
