@@ -1,7 +1,5 @@
 # CECS-448-Project-3-Team-3
 
-Live demo: https://kn2117.github.io/CECS-448-Project-3-Team-3/
+To run, use the `npm run dev` command.
 
-To update the above link, run the following command, then commit/push the files located in the `/docs` directory:
-
-`npm run build -- --outDir docs`
+If this is your first time running this app, be sure to use the `npm install` command to install all of the dependencies.
