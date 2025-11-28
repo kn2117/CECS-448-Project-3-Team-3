@@ -1,0 +1,35 @@
+.firstLine {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.categories {
+    margin: auto;
+}
+
+.categories .MuiGrid-container {
+    display: flex;
+    justify-content: center; /* centers the children horizontally */
+    align-items: center;     /* vertically aligns the items */
+}
+
+.addButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px; /* or whatever spacing you want */
+}
+
+p {
+    text-align: center;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons Button {
+    margin: 10px 10px;
+}
