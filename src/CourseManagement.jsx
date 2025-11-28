@@ -11,8 +11,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import './CourseManagement.css';
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
 
-function CourseManagement() {
+function CourseManagement({ open, onClose}) {
     const [courseName, setCourseName] = React.useState('');
     const [semester, setSemester] = React.useState('');
     const [categories, setCategories] = React.useState([
@@ -45,77 +48,81 @@ function CourseManagement() {
 
     return (
         <>
-            <p>Add Course</p>
-            <div className="firstLine">
-                <TextField className="courseName" label="Course Name" onChange={handleChangeCourseName} />
-                <Box sx={{ display: "inline-block", minWidth: 200 }} className="semesterSelect">
-                    <FormControl fullWidth>
-                        <InputLabel>Select a Semester</InputLabel>
-                        <Select
-                            value={semester}
-                            label="Semester"
-                            onChange={handleChangeSemester}
-                        >
-                            <MenuItem value={"s2025"}>Spring 2025</MenuItem>
-                            <MenuItem value={"f2025"}>Fall 2025</MenuItem>
-                            <MenuItem value={"s2026"}>Spring 2026</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
-            </div>
-            <p>Categories</p>
-            <Box sx={{ width: "100%", maxWidth: 600 }} className="categories">
-                {categories.map((cat, i) => (
-                    <Grid container spacing={2} key={i} sx={{ mb: 2 }} alignItems="center">
+            <Dialog open={open} onClose={onClose}>
+                <DialogTitle>Add Course</DialogTitle>
+                <DialogContent>
+                    <div className="firstLine">
+                        <TextField className="courseName" label="Course Name" onChange={handleChangeCourseName} />
+                        <Box sx={{ display: "inline-block", minWidth: 200 }} className="semesterSelect">
+                            <FormControl fullWidth>
+                                <InputLabel>Select a Semester</InputLabel>
+                                <Select
+                                    value={semester}
+                                    label="Select a Semester"
+                                    onChange={handleChangeSemester}
+                                >
+                                    <MenuItem value={"s2025"}>Spring 2025</MenuItem>
+                                    <MenuItem value={"f2025"}>Fall 2025</MenuItem>
+                                    <MenuItem value={"s2026"}>Spring 2026</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    </div>
+                    <p>Categories</p>
+                    <Box sx={{ width: "100%", maxWidth: 600 }} className="categories">
+                        {categories.map((cat, i) => (
+                            <Grid container spacing={2} key={i} sx={{ mb: 2 }} alignItems="center">
 
-                        <Grid item xs={5}>
-                            <TextField
-                                label="Category Name"
-                                fullWidth
-                                value={cat.name}
-                                onChange={(e) =>
-                                    handleChangeCategories(i, "name", e.target.value)
-                                }
-                            />
-                        </Grid>
+                                <Grid item xs={5}>
+                                    <TextField
+                                        label="Category Name"
+                                        fullWidth
+                                        value={cat.name}
+                                        onChange={(e) =>
+                                            handleChangeCategories(i, "name", e.target.value)
+                                        }
+                                    />
+                                </Grid>
 
-                        <Grid item xs={5}>
-                            <TextField
-                                label="Weight"
-                                fullWidth
-                                value={cat.weight}
-                                onChange={(e) =>
-                                    handleChangeCategories(i, "weight", e.target.value)
-                                }
-                            />
-                        </Grid>
+                                <Grid item xs={5}>
+                                    <TextField
+                                        label="Weight"
+                                        fullWidth
+                                        value={cat.weight}
+                                        onChange={(e) =>
+                                            handleChangeCategories(i, "weight", e.target.value)
+                                        }
+                                    />
+                                </Grid>
 
-                        <Grid item xs={2}>
-                            <IconButton
-                                color="error"
-                                onClick={() => deleteCategory(i)}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </Grid>
-                    </Grid>
-                ))}
+                                <Grid item xs={2}>
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => deleteCategory(i)}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                        ))}
 
-                <Box className="addButtonContainer">
-                    <Button variant="contained" onClick={addCategory}>
-                        Add Category
-                        <AddIcon />
-                    </Button>
-                </Box>
-            </Box>
-            <div className="buttons">
-                <Button variant="contained" color="error">
-                    Test
-                </Button>
-                <Button variant="contained" color="success">
-                    Test
-                </Button>
-            </div>
+                        <Box className="addButtonContainer">
+                            <Button variant="contained" onClick={addCategory}>
+                                Add Category
+                                <AddIcon />
+                            </Button>
+                        </Box>
+                    </Box>
+                    <div className="buttons">
+                        <Button variant="contained" color="error" style={{minWidth: '100px'}} onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button variant="contained" color="success" style={{minWidth: '100px'}} onClick={onClose}>
+                            Add
+                        </Button>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </>
     )
 }
