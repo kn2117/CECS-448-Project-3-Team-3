@@ -28,7 +28,8 @@ function App() {
         <Button style={{fontSize:'24px', color:'black', borderRight:'2px solid black', borderRadius:0, height:'100%'}} onClick={() => setOpenDialog(true)}>
           +
         </Button>
-        <Footer choices={['test1', 'test2']} onClick={setCourse}/>
+        
+        <Footer choices={['test1', 'test2']} current ={course} onClick={setCourse}/>
       </div>
     </div>
   )
