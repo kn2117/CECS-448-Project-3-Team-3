@@ -6,6 +6,7 @@ import CourseManagement from './CourseManagement'
 import { Button } from '@mui/material'
 function App() {
   const [semester, setSemester] = useState('Fall 2025');
+  const [course, setCourse] = useState('CECS 329');
   const [openDialog, setOpenDialog] = useState(false);
   return (
     <div id='root'>
@@ -14,13 +15,13 @@ function App() {
       </div>
       <div class='body'>
         {/*add body.jsx*/}
-        <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} />
       </div>
       <div class='footer'>
         <Button style={{fontSize:'24px', color:'black'}} onClick={() => setOpenDialog(true)}>
           +
         </Button>
-        {/*add footer.jsx*/}
+        <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} />
+        
       </div>
     </div>
   )
