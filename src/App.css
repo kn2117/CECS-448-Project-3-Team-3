@@ -18,6 +18,12 @@
   background-color:white;
 }
 
+.header {
+  justify-content: space-between;
+  align-items: center;
+
+}
+
 .body{
   flex-grow: 1;
   border-top: 4px solid #c8c8c8;

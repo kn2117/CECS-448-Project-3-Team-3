@@ -15,7 +15,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
-function CourseManagement({ open, onClose}) {
+function CourseManagement({ open, onClose, edit }) {
     const [courseName, setCourseName] = React.useState('');
     const [semester, setSemester] = React.useState('');
     const [categories, setCategories] = React.useState([
@@ -46,10 +46,13 @@ function CourseManagement({ open, onClose}) {
         setCategories(updated);
     };
 
+    const title = edit ? "Edit Course" : "Add Course";
+    const save = edit ? "Save" : "Add";
+
     return (
         <>
             <Dialog open={open} onClose={onClose}>
-                <DialogTitle>Add Course</DialogTitle>
+                <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <div className="firstLine">
                         <TextField className="courseName" label="Course Name" onChange={handleChangeCourseName} />
@@ -114,11 +117,11 @@ function CourseManagement({ open, onClose}) {
                         </Box>
                     </Box>
                     <div className="buttons">
-                        <Button variant="contained" color="error" style={{minWidth: '100px'}} onClick={onClose}>
+                        <Button variant="contained" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button variant="contained" color="success" style={{minWidth: '100px'}} onClick={onClose}>
-                            Add
+                        <Button variant="contained" color="success" style={{ minWidth: '100px' }} onClick={onClose}>
+                            {save}
                         </Button>
                     </div>
                 </DialogContent>
