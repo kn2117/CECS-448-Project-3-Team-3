@@ -6,6 +6,8 @@ import CourseManagement from './CourseManagement'
 import { Button, TextField } from '@mui/material'
 import Footer from './footer'
 import Dropdown from './dropdown'
+import Body from './Body'
+
 function App() {
   const [semesters, setSemesters] = useState({
     'Fall 2025': ['test1', 'test2'],
@@ -45,7 +47,7 @@ function App() {
         </Button>
       </div>
       <div class='body'>
-        {/*add body.jsx*/}
+        <Body />
       </div>
       <div class='footer'>
         <Button style={{ fontSize: '24px', color: 'black', borderRight: '2px solid black', borderRadius: 0, height: '100%' }} onClick={() => { setOpenDialog(true); setDialogMode("add"); }}>
