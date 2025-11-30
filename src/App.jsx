@@ -9,12 +9,11 @@ import Footer from './footer'
 import Dropdown from './dropdown'
 function App() {
   const [semesters, setSemesters] = useState({
-    'Fall 2025': ['test1', 'test2'],
-    'Spring 2025': ['test3', 'test4']
+    'Fall 2025': ['CECS 329', 'MATH 101'],
+    'Spring 2025': ['test 3', 'test 4']
   });
-  //const semesters =['Fall 2025', 'Spring 2025', 'Fall 2024', 'Spring 2024'];
   const [semester, setSemester] = useState('Fall 2025');
-  const [course, setCourse] = useState('test1');
+  const [course, setCourse] = useState('CECS 329');
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState("add");
 
@@ -29,16 +28,16 @@ function App() {
   return (
     <div id='root'>
       <div class='header'>
-        {/*add header.jsx*/}
         {/*Testing */}
         <Dropdown choices={Object.keys(semesters)} current={semester} onClick={setSemester} />
         <Button style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '75%' }} onClick={() => { setOpenDialog(true); setDialogMode("edit") }}>
           Edit Course
         </Button>
+        
       </div>
       <div class='body'>
         {/*add body.jsx*/}
-        <GradeViews semester={semester} />
+        <GradeViews course={course} />
       </div>
       <div class='footer'>
         <Button style={{ fontSize: '24px', color: 'black', borderRight: '2px solid black', borderRadius: 0, height: '100%' }} onClick={() => { setOpenDialog(true); setDialogMode("add"); }}>

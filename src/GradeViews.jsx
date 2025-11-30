@@ -9,8 +9,9 @@ import {
   recommendFocusByPotential,
   recommendFocusByLowestGrade
 } from './gradeCalculator';
+import { useEffect } from 'react';
 
-function GradeViews() {
+function GradeViews({course}) {
     // Mock data
     const [mockCourses] = useState([
         { 
@@ -43,7 +44,12 @@ function GradeViews() {
     ]);
 
     // State for selected view and focus mode
-    const [selectedCourse, setSelectedCourse] = useState(mockCourses[0]);
+    const [selectedCourse, setSelectedCourse] = useState(mockCourses.find(c=> c.name == course));
+
+    useEffect(()=>{
+        setSelectedCourse(mockCourses.find(c=> c.name == course))
+    }, [course])
+
     const [focusMode, setFocusMode] = useState('potential'); // 'potential' or 'lowestGrade'
 
     // Calculate grades for each course
@@ -70,6 +76,17 @@ function GradeViews() {
     // Calculate overall GPA
     const overallGPA = calculateOverallGPA(courseGrades);
 
+    if (!selectedCourse){
+        return (
+            <div className='grade-views'>
+                <p>
+                    No available data for {course}
+                </p>
+            </div>
+        )
+    }
+
+
     return (
         <div className="grade-views">
             <h1>Grade Views</h1>
@@ -77,7 +94,7 @@ function GradeViews() {
             <div className="course-detail">
                 <h2>Course Detail View</h2>
                 {/* Course selector */}
-                <div className="course-selector">
+                {/* <div className="course-selector">
                     <label>Select Course: </label>
                     <select
                         value={selectedCourse.name}
@@ -87,7 +104,7 @@ function GradeViews() {
                             <option key={course.name} value={course.name}>{course.name}</option>
                         ))}
                     </select>
-                </div>
+                </div> */}
 
                 {/* Course details */}
                 <div className="course-info">
@@ -157,9 +174,9 @@ function GradeViews() {
                                     : 'N/A';
                                 return (
                                     <div key={category} className="category-card">
-                                        <span className="category-name">{category}</span>
-                                        <span className="category-weight">{weight}% of grade</span>
-                                        <span className="category-average">Avg: {categoryAverage}%</span>
+                                        <span className="category-name">{category} </span>
+                                        <span className="category-weight">{weight}% of grade </span>
+                                        <span className="category-average">with Average of {categoryAverage}% </span>
                                         <span className="category-count">({categoryAssignments.length} assignments)</span>
                                     </div>
                                 );
@@ -176,7 +193,7 @@ function GradeViews() {
                 
                 <div className="gpa-display">
                     <div className="gpa-main">
-                        <span className="gpa-label">Current GPA:</span>
+                        <span className="gpa-label">Current GPA: </span>
                         <span className="gpa-value">{overallGPA?.toFixed(2) || 'N/A'}</span>
                     </div>
                 </div>
@@ -231,13 +248,15 @@ function GradeViews() {
 
                     <div className="focus-rankings">
                         {focusRecommendations?.map((course, index) => (
-                            <div key={index} className={`focus-card rank-${index + 1}`}>
-                                <div className="rank-badge">#{index + 1}</div>
-                                <div className="focus-info">
+                            <div key={index} className={`focus-card rank-${index + 1}`} style={{marginBottom:10}}>
+                                <div className="rank-badge">
+                                    <b>#{index + 1}</b>
+                                </div>
+                                <div className="focus-info" style={{marginLeft:20}}>
                                     <h4>{course.name}</h4>
                                     <div className="focus-stats">
-                                        <span>Current: {course.currentGrade?.toFixed(1) || course.finalGrade?.toFixed(1)}%</span>
-                                        <span>Letter: {course.letterGrade || convertToLetterGrade(course.currentGrade || course.finalGrade)}</span>
+                                        <span>Current: {course.currentGrade?.toFixed(1) || course.finalGrade?.toFixed(1)}% </span>
+                                        <span>Letter: {course.letterGrade || convertToLetterGrade(course.currentGrade || course.finalGrade)} </span>
                                         {focusMode === 'potential' && course.priorityScore && (
                                             <span>Potential Score: {course.priorityScore.toFixed(0)}</span>
                                         )}
