@@ -1,0 +1,3 @@
+function AssignmentManagement({open, onClose}) {
+    
+}
