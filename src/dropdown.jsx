@@ -16,7 +16,7 @@ function Dropdown({current, choices, onClick}){
         {
             height:'100%', width:'10%', 
             fontSize:24, backgroundColor:'#D9D9D9', color:'black',
-            borderRight:'2px solid black'
+            borderRight:'2px solid black', minWidth:'150px'
         }
 
     return(
