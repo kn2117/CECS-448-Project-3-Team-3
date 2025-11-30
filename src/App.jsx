@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import CourseManagement from './CourseManagement'
-import { Button } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import Footer from './footer'
 import Dropdown from './dropdown'
 function App() {
@@ -16,6 +16,8 @@ function App() {
   const [course, setCourse] = useState('test1');
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState("add");
+  const [documentName, setDocumentName] = useState("Grade Dashboard");
+
 
   const addCourse = function (semester, courseName) {
     setSemesters(prev => {
@@ -31,6 +33,13 @@ function App() {
         {/*add header.jsx*/}
         {/*Testing */}
         <Dropdown choices={Object.keys(semesters)} current={semester} onClick={setSemester} />
+        <TextField 
+          value={documentName}
+          onChange={(e) => setDocumentName(e.target.value)}
+          style={{ marginLeft: '10px', marginRight: '10px'}}
+          sx={{ width: `${Math.ceil(documentName.length * 1.7)+2}ch`}}
+          inputProps={{ style: { fontSize: 24}}}
+          />
         <Button style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '75%' }} onClick={() => { setOpenDialog(true); setDialogMode("edit") }}>
           Edit Course
         </Button>
