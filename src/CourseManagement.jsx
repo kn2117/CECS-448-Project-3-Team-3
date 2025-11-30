@@ -15,7 +15,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
-function CourseManagement({ open, onClose, edit }) {
+function CourseManagement({ open, onClose, edit, semesters }) {
     const [courseName, setCourseName] = React.useState('');
     const [semester, setSemester] = React.useState('');
     const [categories, setCategories] = React.useState([
@@ -64,9 +64,9 @@ function CourseManagement({ open, onClose, edit }) {
                                     label="Select a Semester"
                                     onChange={handleChangeSemester}
                                 >
-                                    <MenuItem value={"s2025"}>Spring 2025</MenuItem>
-                                    <MenuItem value={"f2025"}>Fall 2025</MenuItem>
-                                    <MenuItem value={"s2026"}>Spring 2026</MenuItem>
+                                    {Object.keys(semesters).map((semester) => (
+                                        <MenuItem value={semester}>{semester}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>

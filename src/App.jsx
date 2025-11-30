@@ -37,7 +37,7 @@ function App() {
 
         <Footer choices={semesters[semester]} current={course} onClick={setCourse} />
       </div>
-      <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} />
+      <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} />
     </div>
   )
 }
