@@ -10,7 +10,7 @@ import {
   recommendFocusByLowestGrade
 } from './gradeCalculator';
 
-function GradeViews({ semester, selectedCourseName, courseData }) {
+function GradeViews({ semester, selectedCourseName, courseData, onBackToDashboard }) {
     // Get courses for the current semester
     const coursesInSemester = Object.values(courseData).filter(
         course => course.semester === semester
@@ -19,8 +19,6 @@ function GradeViews({ semester, selectedCourseName, courseData }) {
     // Get the selected course data
     const selectedCourseData = courseData[selectedCourseName] || coursesInSemester[0];
 
-    // State for view mode: 'dashboard' or 'courseDetail'
-    const [viewMode, setViewMode] = useState('dashboard');
     const [selectedCourse, setSelectedCourse] = useState(selectedCourseData);
     const [focusMode, setFocusMode] = useState('potential'); // 'potential' or 'lowestGrade'
 
@@ -58,10 +56,16 @@ function GradeViews({ semester, selectedCourseName, courseData }) {
 
     return (
         <div className="grade-views">
-            <h1>Grade Views</h1>
+            <div className="back-to-dashboard-header">
+                <button className="back-button" onClick={onBackToDashboard}>
+                    ← Back to Dashboard
+                </button>
+                <h1>Course Detail View</h1>
+            </div>
+
             {/* Individual course detail */}
             <div className="course-detail">
-                <h2>Course Detail View</h2>
+                <h2>Course Information</h2>
                 {/* Course selector */}
                 <div className="course-selector">
                     <label>Select Course: </label>

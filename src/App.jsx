@@ -4,11 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import CourseManagement from './CourseManagement'
 import GradeViews from './GradeViews'
+import Dashboard from './Dashboard'
 import { Button } from '@mui/material'
 import Footer from './footer'
 import Dropdown from './dropdown'
 function App() {
-  // Store course data with full details
+  const [viewMode, setViewMode] = useState('dashboard');
   const [courseData, setCourseData] = useState({
     'test1': {
       name: 'test1',
@@ -113,18 +114,33 @@ function App() {
       </div>
       <div class='body'>
         {/*add body.jsx*/}
-        <GradeViews
-          semester={semester}
-          selectedCourseName={course}
-          courseData={courseData}
-        />
+        {viewMode === 'dashboard' ? (
+          <Dashboard
+            semester={semester}
+            courseData={courseData}
+          />
+        ) : (
+          <GradeViews
+            semester={semester}
+            selectedCourseName={course}
+            courseData={courseData}
+            onBackToDashboard={() => setViewMode('dashboard')}
+          />
+        )}
       </div>
       <div class='footer'>
         <Button style={{ fontSize: '24px', color: 'black', borderRight: '2px solid black', borderRadius: 0, height: '100%' }} onClick={() => { setOpenDialog(true); setDialogMode("add"); }}>
           +
         </Button>
 
-        <Footer choices={semesters[semester]} current={course} onClick={setCourse} />
+        <Footer
+          choices={semesters[semester]}
+          current={course}
+          onClick={(selectedCourse) => {
+            setCourse(selectedCourse);
+            setViewMode('courseDetail');
+          }}
+        />
       </div>
       <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} addCourse={addCourse} />
     </div>
