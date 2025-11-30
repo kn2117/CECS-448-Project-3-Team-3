@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './GradeViews.css';
 import {
   calculateWeightedGrade,
@@ -10,55 +10,41 @@ import {
   recommendFocusByLowestGrade
 } from './gradeCalculator';
 
-function GradeViews() {
-    // Mock data
-    const [mockCourses] = useState([
-        { 
-         name: "CECS 329",
-         isWeighted: true,
-         categoryWeights: {
-            "Homework": 30,
-            "Quizzes": 20,
-            "Exams": 50
-         },
-         assignments: [
-            { name: "HW1", score: 95, maxScore: 100, category: "Homework", dueDate: "2024-11-01" },
-            { name: "Quiz1", score: 85, maxScore: 100, category: "Quizzes", dueDate: "2024-11-05" },
-            { name: "Exam1", score: 90, maxScore: 100, category: "Exams", dueDate: "2024-11-10" }
-         ],
-         currentGrade: 87.5,
-         remainingWeight: 50
-        },
-        { 
-         name: "MATH 101",
-         isWeighted: false,
-         assignments: [
-            { name: "HW1", score: 80, maxScore: 100, category: "Homework", dueDate: "2024-11-02" },
-            { name: "Quiz1", score: 70, maxScore: 100, category: "Quizzes", dueDate: "2024-11-06" },
-            { name: "Exam1", score: 75, maxScore: 100, category: "Exams", dueDate: "2024-11-11" }
-         ],
-         currentGrade: 75,
-         remainingWeight: 40
-        }
-    ]);
+function GradeViews({ semester, selectedCourseName, courseData }) {
+    // Get courses for the current semester
+    const coursesInSemester = Object.values(courseData).filter(
+        course => course.semester === semester
+    );
 
-    // State for selected view and focus mode
-    const [selectedCourse, setSelectedCourse] = useState(mockCourses[0]);
+    // Get the selected course data
+    const selectedCourseData = courseData[selectedCourseName] || coursesInSemester[0];
+
+    // State for view mode: 'dashboard' or 'courseDetail'
+    const [viewMode, setViewMode] = useState('dashboard');
+    const [selectedCourse, setSelectedCourse] = useState(selectedCourseData);
     const [focusMode, setFocusMode] = useState('potential'); // 'potential' or 'lowestGrade'
 
+    // Update selected course when the selectedCourseName prop changes
+    React.useEffect(() => {
+        if (selectedCourseName && courseData[selectedCourseName]) {
+            setSelectedCourse(courseData[selectedCourseName]);
+        }
+    }, [selectedCourseName, courseData]);
+
     // Calculate grades for each course
-    const courseGrades = mockCourses.map(course => {
-        const finalGrade = course.isWeighted 
-            ? calculateWeightedGrade(course) 
+    const courseGrades = coursesInSemester.map(course => {
+        const finalGrade = course.isWeighted
+            ? calculateWeightedGrade(course)
             : calculateUnweightedGrade(course);
         const letterGrade = convertToLetterGrade(finalGrade);
         const gpa = convertToGPA(letterGrade);
 
         return {
-            ...course, 
-            finalGrade,
+            ...course,
+            finalGrade: finalGrade || 0,
+            currentGrade: finalGrade || 0,
             letterGrade,
-            gpa
+            gpa: gpa || 0
         };
     });
 
@@ -80,32 +66,35 @@ function GradeViews() {
                 <div className="course-selector">
                     <label>Select Course: </label>
                     <select
-                        value={selectedCourse.name}
-                        onChange={(e) => setSelectedCourse(mockCourses.find(c => c.name === e.target.value))}
+                        value={selectedCourse?.name || ''}
+                        onChange={(e) => setSelectedCourse(coursesInSemester.find(c => c.name === e.target.value))}
                     >
-                        {mockCourses.map(course => (
+                        {coursesInSemester.map(course => (
                             <option key={course.name} value={course.name}>{course.name}</option>
                         ))}
                     </select>
                 </div>
 
                 {/* Course details */}
+                {selectedCourse ? (
                 <div className="course-info">
                     <h3>{selectedCourse.name}</h3>
                     <div className="course-stats">
                         <div className="stat-card">
                             <span className="stat-label">Current Grade:</span>
                             <span className="stat-value">
-                                {selectedCourse.isWeighted
-                                    ? calculateWeightedGrade(selectedCourse).toFixed(2)
-                                    : calculateUnweightedGrade(selectedCourse).toFixed(2)}%
+                                {selectedCourse.assignments && selectedCourse.assignments.length > 0 ? (
+                                    selectedCourse.isWeighted
+                                        ? calculateWeightedGrade(selectedCourse).toFixed(2)
+                                        : calculateUnweightedGrade(selectedCourse).toFixed(2)
+                                ) : 'N/A'}%
                             </span>
                             <span className="stat-letter">
-                                {convertToLetterGrade(
+                                {selectedCourse.assignments && selectedCourse.assignments.length > 0 ? convertToLetterGrade(
                                     selectedCourse.isWeighted
                                         ? calculateWeightedGrade(selectedCourse)
                                         : calculateUnweightedGrade(selectedCourse)
-                                )}
+                                ) : 'N/A'}
                             </span>
                         </div>
                         <div className="stat-card">
@@ -120,38 +109,44 @@ function GradeViews() {
                 
                 {/* Assignment breakdown */}
                 <div className="assignment-breakdown">
-                    <h4>Assignments ({selectedCourse.assignments.length})</h4>
-                    <table className="assignments-table">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Score</th>
-                                <th>Percentage</th>
-                                <th>Due Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {selectedCourse.assignments.map((assignment, index) => (
-                                <tr key={index}>
-                                    <td>{assignment.name}</td>
-                                    <td>{assignment.category}</td>
-                                    <td>{assignment.score} / {assignment.maxScore}</td>
-                                    <td>{((assignment.score / assignment.maxScore) * 100).toFixed(2)}%</td>
-                                    <td>{assignment.dueDate}</td>
+                    <h4>Assignments ({selectedCourse.assignments?.length || 0})</h4>
+                    {selectedCourse.assignments && selectedCourse.assignments.length > 0 ? (
+                        <table className="assignments-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Score</th>
+                                    <th>Percentage</th>
+                                    <th>Due Date</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {selectedCourse.assignments.map((assignment, index) => (
+                                    <tr key={index}>
+                                        <td>{assignment.name}</td>
+                                        <td>{assignment.category}</td>
+                                        <td>{assignment.score} / {assignment.maxScore}</td>
+                                        <td>{((assignment.score / assignment.maxScore) * 100).toFixed(2)}%</td>
+                                        <td>{assignment.dueDate}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>
+                            No assignments yet. Add assignments to see them here.
+                        </p>
+                    )}
                 </div>
 
                 {/* Category breakdown if weighted*/}
-                {selectedCourse.isWeighted && (
+                {selectedCourse.isWeighted && selectedCourse.categoryWeights && (
                     <div className="category-breakdown">
                         <h4>Category Breakdown</h4>
                         <div className="categories">
                             {Object.entries(selectedCourse.categoryWeights).map(([category, weight]) => {
-                                const categoryAssignments = selectedCourse.assignments.filter(a => a.category === category);
+                                const categoryAssignments = (selectedCourse.assignments || []).filter(a => a.category === category);
                                 const categoryAverage = categoryAssignments.length > 0
                                     ? (categoryAssignments.reduce((sum, a) => sum + (a.score / a.maxScore * 100), 0) / categoryAssignments.length).toFixed(1)
                                     : 'N/A';
@@ -168,6 +163,11 @@ function GradeViews() {
                     </div>
                 )}
                 </div>
+                ) : (
+                    <p style={{ textAlign: 'center', color: '#666', padding: '20px' }}>
+                        No course selected. Please select a course from the tabs below.
+                    </p>
+                )}
             </div>
 
             {/* Overall GPA */}
@@ -197,10 +197,10 @@ function GradeViews() {
                             {courseGrades.map((course, index) => (
                                 <tr key={index}>
                                     <td>{course.name}</td>
-                                    <td>{course.finalGrade.toFixed(2)}%</td>
-                                    <td className="letter-grade">{course.letterGrade}</td>
-                                    <td>{course.gpa.toFixed(2)}</td>
-                                    <td>{course.assignments.length}</td>
+                                    <td>{(course.finalGrade || 0).toFixed(2)}%</td>
+                                    <td className="letter-grade">{course.letterGrade || 'N/A'}</td>
+                                    <td>{(course.gpa || 0).toFixed(2)}</td>
+                                    <td>{course.assignments?.length || 0}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -236,9 +236,9 @@ function GradeViews() {
                                 <div className="focus-info">
                                     <h4>{course.name}</h4>
                                     <div className="focus-stats">
-                                        <span>Current: {course.currentGrade?.toFixed(1) || course.finalGrade?.toFixed(1)}%</span>
-                                        <span>Letter: {course.letterGrade || convertToLetterGrade(course.currentGrade || course.finalGrade)}</span>
-                                        {focusMode === 'potential' && course.priorityScore && (
+                                        <span>Current: {(course.currentGrade || course.finalGrade || 0).toFixed(1)}%</span>
+                                        <span>Letter: {course.letterGrade || 'N/A'}</span>
+                                        {focusMode === 'potential' && course.priorityScore !== undefined && (
                                             <span>Potential Score: {course.priorityScore.toFixed(0)}</span>
                                         )}
                                     </div>
