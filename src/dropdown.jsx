@@ -21,12 +21,12 @@ function Dropdown({current, choices, onClick}){
 
     return(
         <select value={current} onChange={handle} style={style}> 
-                {items.map(element => (
-                    <option key={element} value ={element} style={{backgroundColor:'white', color:'black'}}>
-                        {element}
-                    </option>
+            {items.map(element => (
+                <option key={element} value ={element} style={{backgroundColor:'white', color:'black'}}>
+                    {element}
+                </option>
                 ))
-                }
+            }
         </select>
     )
 
