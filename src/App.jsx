@@ -5,9 +5,11 @@ import './App.css'
 import CourseManagement from './CourseManagement'
 import { Button } from '@mui/material'
 import Footer from './footer'
+import Dropdown from './dropdown'
 function App() {
   const sem1 = ['test1', 'test2'];
-  const sem2 = ['test3', 'test4']
+  const sem2 = ['test3', 'test4'];
+  const semesters =['Fall 2025', 'Spring 2025', 'Fall 2024', 'Spring 2024'];
   const [semester, setSemester] = useState('Fall 2025');
   const [course, setCourse] = useState(sem1[0]);
   const [openDialog, setOpenDialog] = useState(false);
@@ -18,9 +20,7 @@ function App() {
       <div class='header'>
         {/*add header.jsx*/}
         {/*Testing */}
-        <p>
-          {course}
-        </p>
+        <Dropdown choices={semesters} current={semester} onClick={setSemester}/>  
         <Button style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '75%' }} onClick={() => {setOpenDialog(true); setDialogMode("edit")}}>
           Edit Course
         </Button>
@@ -33,7 +33,7 @@ function App() {
           +
         </Button>
 
-        <Footer choices={['test1', 'test2']} current={course} onClick={setCourse} />
+        <Footer choices={sem1} current={course} onClick={setCourse} />
       </div>
       <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} />
     </div>
