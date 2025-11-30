@@ -6,16 +6,17 @@
   flex-direction:column;
   background-color:white;
   color:black;
-  overflow:hidden;
+  overflow:auto;
 }
 
 .header, .footer {
   display:flex;
   flex-direction:row;
   width:100%;
-  height:10%;
+  height:5%;
   min-height:50px;
   background-color:white;
+  flex-shrink: 0;
 }
 
 .header {
@@ -30,8 +31,10 @@
   border-bottom: 4px solid #c8c8c8;
   background-color:#BFE0F4;
   min-height:200px;
+  min-width:800px;
   width:100%;
   overflow: auto;
+
   
 }
 
