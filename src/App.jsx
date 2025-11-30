@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import CourseManagement from './CourseManagement'
+import GradeViews from './GradeViews'
 import { Button } from '@mui/material'
 function App() {
   const [semester, setSemester] = useState('Fall 2025');
@@ -15,6 +16,7 @@ function App() {
       <div class='body'>
         {/*add body.jsx*/}
         <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} />
+        <GradeViews semester={semester} />
       </div>
       <div class='footer'>
         <Button style={{fontSize:'24px', color:'black'}} onClick={() => setOpenDialog(true)}>
