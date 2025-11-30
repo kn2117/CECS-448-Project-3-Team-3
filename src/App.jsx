@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import CourseManagement from './CourseManagement'
+import AssignmentManagement from './AssignmentManagement'
 import { Button } from '@mui/material'
 import Footer from './footer'
 function App() {
@@ -25,6 +26,8 @@ function App() {
       </div>
       <div class='footer'>
         <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} />
+        <AssignmentManagement open={openDialog} onClose={() => setOpenDialog(false)} onAdd={(data) => console.log(data)} />
+  
         <Button style={{fontSize:'24px', color:'black', borderRight:'2px solid black', borderRadius:0, height:'100%'}} onClick={() => setOpenDialog(true)}>
           +
         </Button>
