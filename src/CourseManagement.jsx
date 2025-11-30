@@ -15,7 +15,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
-function CourseManagement({ open, onClose}) {
+function CourseManagement({ open, onClose, edit, semesters, addCourse }) {
     const [courseName, setCourseName] = React.useState('');
     const [semester, setSemester] = React.useState('');
     const [categories, setCategories] = React.useState([
@@ -37,6 +37,11 @@ function CourseManagement({ open, onClose}) {
         console.log(categories)
     };
 
+    const handleSave = (semester, courseName) => {
+        addCourse(semester, courseName)
+        onClose()
+    };
+
     const addCategory = () => {
         setCategories([...categories, { name: "", weight: "" }]);
     };
@@ -46,10 +51,13 @@ function CourseManagement({ open, onClose}) {
         setCategories(updated);
     };
 
+    const title = edit ? "Edit Course" : "Add Course";
+    const save = edit ? "Save" : "Add";
+
     return (
         <>
             <Dialog open={open} onClose={onClose}>
-                <DialogTitle>Add Course</DialogTitle>
+                <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <div className="firstLine">
                         <TextField className="courseName" label="Course Name" onChange={handleChangeCourseName} />
@@ -61,9 +69,9 @@ function CourseManagement({ open, onClose}) {
                                     label="Select a Semester"
                                     onChange={handleChangeSemester}
                                 >
-                                    <MenuItem value={"s2025"}>Spring 2025</MenuItem>
-                                    <MenuItem value={"f2025"}>Fall 2025</MenuItem>
-                                    <MenuItem value={"s2026"}>Spring 2026</MenuItem>
+                                    {Object.keys(semesters).map((semester) => (
+                                        <MenuItem value={semester}>{semester}</MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Box>
@@ -114,11 +122,16 @@ function CourseManagement({ open, onClose}) {
                         </Box>
                     </Box>
                     <div className="buttons">
-                        <Button variant="contained" color="error" style={{minWidth: '100px'}} onClick={onClose}>
+                        {edit && (
+                            <Button variant="contained" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
+                                Delete
+                            </Button>
+                        )}
+                        <Button variant="outlined" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button variant="contained" color="success" style={{minWidth: '100px'}} onClick={onClose}>
-                            Add
+                        <Button variant="contained" color="success" style={{ minWidth: '100px' }} onClick={() => handleSave(semester, courseName)}>
+                            {save}
                         </Button>
                     </div>
                 </DialogContent>
