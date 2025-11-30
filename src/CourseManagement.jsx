@@ -122,7 +122,12 @@ function CourseManagement({ open, onClose, edit, semesters, addCourse }) {
                         </Box>
                     </Box>
                     <div className="buttons">
-                        <Button variant="contained" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
+                        {edit && (
+                            <Button variant="contained" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
+                                Delete
+                            </Button>
+                        )}
+                        <Button variant="outlined" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
                             Cancel
                         </Button>
                         <Button variant="contained" color="success" style={{ minWidth: '100px' }} onClick={() => handleSave(semester, courseName)}>
