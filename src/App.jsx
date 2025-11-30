@@ -19,12 +19,8 @@ function App() {
 
   const addCourse = function (semester, courseName) {
     setSemesters(prev => {
-      // make a shallow copy of semesters
       const updated = { ...prev };
-
-      // make a shallow copy of the course list
       updated[semester] = [...updated[semester], courseName];
-
       return updated;
     });
   };
