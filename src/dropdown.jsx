@@ -13,7 +13,7 @@ function Dropdown({current, choices, onClick}){
         onClick(event.target.value)
     }
     return(
-        <select value={current} onChange={handle} style={{height:'100%', width:'10%', 
+        <select value={current} onChange={handle} style={{height:'100%', width:'fit-content', 
             fontSize:24, backgroundColor:'#D9D9D9', color:'black',
             borderRight:'2px solid black'}}> 
                 {items.map(element => (
