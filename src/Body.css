@@ -1,1 +1,56 @@
+.body-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
 
+.assignments-page, .grade-pie-chart, .grade-line-chart {
+    background-color: #f9f9f9;
+    margin-top: 400px;
+    border: 2px solid black;
+    width : 30%;
+    height: auto;
+}
+
+.grade-pie-chart{
+    width:15%
+}
+
+.assignments-header, .grade-pie-chart-header, .grade-line-chart-header {
+    display: flex;
+    text-align: center;
+    background-color: lightgrey;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 0px;
+    justify-content: space-between;
+    font-weight: normal;
+    margin: auto;
+}
+
+.assignments-table {
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: white;
+}
+
+table {
+    position: sticky;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid black;
+  text-align: center;
+  align-items: center;
+}
+
+.grade-pie-chart-header, .grade-line-chart-header {
+  justify-content: center;
+}
