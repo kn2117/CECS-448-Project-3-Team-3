@@ -7,23 +7,35 @@ import { Button } from '@mui/material'
 import Footer from './footer'
 import Dropdown from './dropdown'
 function App() {
-  const semesters = {
-    'Fall 2025':['test1', 'test2'],
-    'Spring 2025':['test3', 'test4']
-  }
+  const [semesters, setSemesters] = useState({
+    'Fall 2025': ['test1', 'test2'],
+    'Spring 2025': ['test3', 'test4']
+  });
   //const semesters =['Fall 2025', 'Spring 2025', 'Fall 2024', 'Spring 2024'];
   const [semester, setSemester] = useState('Fall 2025');
   const [course, setCourse] = useState('test1');
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState("add");
 
+  const addCourse = function (semester, courseName) {
+    setSemesters(prev => {
+      // make a shallow copy of semesters
+      const updated = { ...prev };
+
+      // make a shallow copy of the course list
+      updated[semester] = [...updated[semester], courseName];
+
+      return updated;
+    });
+  };
+
   return (
     <div id='root'>
       <div class='header'>
         {/*add header.jsx*/}
         {/*Testing */}
-        <Dropdown choices={Object.keys(semesters)} current={semester} onClick={setSemester}/>  
-        <Button style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '75%' }} onClick={() => {setOpenDialog(true); setDialogMode("edit")}}>
+        <Dropdown choices={Object.keys(semesters)} current={semester} onClick={setSemester} />
+        <Button style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '75%' }} onClick={() => { setOpenDialog(true); setDialogMode("edit") }}>
           Edit Course
         </Button>
       </div>
@@ -31,13 +43,13 @@ function App() {
         {/*add body.jsx*/}
       </div>
       <div class='footer'>
-        <Button style={{ fontSize: '24px', color: 'black', borderRight: '2px solid black', borderRadius: 0, height: '100%' }} onClick={() => {setOpenDialog(true); setDialogMode("add");}}>
+        <Button style={{ fontSize: '24px', color: 'black', borderRight: '2px solid black', borderRadius: 0, height: '100%' }} onClick={() => { setOpenDialog(true); setDialogMode("add"); }}>
           +
         </Button>
 
         <Footer choices={semesters[semester]} current={course} onClick={setCourse} />
       </div>
-      <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} />
+      <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} addCourse={addCourse} />
     </div>
   )
 }

@@ -15,7 +15,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
-function CourseManagement({ open, onClose, edit, semesters }) {
+function CourseManagement({ open, onClose, edit, semesters, addCourse }) {
     const [courseName, setCourseName] = React.useState('');
     const [semester, setSemester] = React.useState('');
     const [categories, setCategories] = React.useState([
@@ -35,6 +35,11 @@ function CourseManagement({ open, onClose, edit, semesters }) {
         updated[index][field] = value;
         setCategories(updated);
         console.log(categories)
+    };
+
+    const handleSave = (semester, courseName) => {
+        addCourse(semester, courseName)
+        onClose()
     };
 
     const addCategory = () => {
@@ -120,7 +125,7 @@ function CourseManagement({ open, onClose, edit, semesters }) {
                         <Button variant="contained" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button variant="contained" color="success" style={{ minWidth: '100px' }} onClick={onClose}>
+                        <Button variant="contained" color="success" style={{ minWidth: '100px' }} onClick={() => handleSave(semester, courseName)}>
                             {save}
                         </Button>
                     </div>
