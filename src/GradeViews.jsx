@@ -156,9 +156,9 @@ function GradeViews({ semester, selectedCourseName, courseData, onBackToDashboar
                                     : 'N/A';
                                 return (
                                     <div key={category} className="category-card">
-                                        <span className="category-name">{category}</span>
-                                        <span className="category-weight">{weight}% of grade</span>
-                                        <span className="category-average">Avg: {categoryAverage}%</span>
+                                        <span className="category-name">{category} </span>
+                                        <span className="category-weight">{weight}% of grade </span>
+                                        <span className="category-average">with average of {categoryAverage}% </span>
                                         <span className="category-count">({categoryAssignments.length} assignments)</span>
                                     </div>
                                 );
@@ -235,13 +235,15 @@ function GradeViews({ semester, selectedCourseName, courseData, onBackToDashboar
 
                     <div className="focus-rankings">
                         {focusRecommendations?.map((course, index) => (
-                            <div key={index} className={`focus-card rank-${index + 1}`}>
-                                <div className="rank-badge">#{index + 1}</div>
-                                <div className="focus-info">
+                            <div key={index} className={`focus-card rank-${index + 1}`} style={{marginBottom:10}}>
+                                <div className="rank-badge">
+                                    <b>#{index + 1}</b>
+                                </div>
+                                <div className="focus-info" style={{marginLeft:20}}>
                                     <h4>{course.name}</h4>
                                     <div className="focus-stats">
-                                        <span>Current: {(course.currentGrade || course.finalGrade || 0).toFixed(1)}%</span>
-                                        <span>Letter: {course.letterGrade || 'N/A'}</span>
+                                        <span>Current: {(course.currentGrade || course.finalGrade || 0).toFixed(1)}% </span>
+                                        <span>Letter: {course.letterGrade || 'N/A'} </span>
                                         {focusMode === 'potential' && course.priorityScore !== undefined && (
                                             <span>Potential Score: {course.priorityScore.toFixed(0)}</span>
                                         )}
