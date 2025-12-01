@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './GradeViews.css';
+import { Button } from '@mui/material'
+import AssignmentManagement from './AssignmentManagement'
 import {
   calculateWeightedGrade,
   calculateUnweightedGrade,
@@ -11,6 +13,8 @@ import {
 } from './gradeCalculator';
 
 function GradeViews({ semester, selectedCourseName, courseData, onBackToDashboard }) {
+    const [openAssignDialog, setOpenAssignDialog] = useState(false);
+    const [dialogAssignMode, setDialogAssignMode] = useState("add");
     // Get courses for the current semester
     const coursesInSemester = Object.values(courseData).filter(
         course => course.semester === semester
@@ -107,13 +111,20 @@ function GradeViews({ semester, selectedCourseName, courseData, onBackToDashboar
                         </div>
                         <div className="stat-card">
                             <span className="stat-label">Remaining Weight</span>
-                            <span className="stat-value">{selectedCourse.remainingWeight}%</span>
+                            <span className="stat-value">{selectedCourse.isWeighted?`${selectedCourse.remainingWeight}%`:'Weights are disbabled'}</span>
                         </div>
                     </div>
                 
                 {/* Assignment breakdown */}
                 <div className="assignment-breakdown">
+                    <div style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
                     <h4>Assignments ({selectedCourse.assignments?.length || 0})</h4>
+                        <Button style={{ fontSize: '24px', color: 'black', height: '100%' }} onClick={() => { setOpenAssignDialog(true); setDialogAssignMode("add"); }}>
+                                +
+                        </Button> 
+                    </div>
+                    <AssignmentManagement open={openAssignDialog} onClose={() => setOpenAssignDialog(false)} onAdd={(data) => console.log(data)} isWeighted={selectedCourse.isWeighted} AssignCat={Object.keys(selectedCourse.categoryWeights)}/>
+                    
                     {selectedCourse.assignments && selectedCourse.assignments.length > 0 ? (
                         <table className="assignments-table">
                             <thead>
