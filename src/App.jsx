@@ -70,10 +70,9 @@ function App() {
 
   // Derive semesters list from courseData
   const [semesters, setSemesters] = useState({
-    'Fall 2025': ['course 1', 'course 2'],
-    'Spring 2025': ['course 3', 'course 4']
+    'Fall 2025': Object.keys(courseData).filter(x=>courseData[x].semester == 'Fall 2025'),
+    'Spring 2025': Object.keys(courseData).filter(x=>courseData[x].semester == 'Spring 2025')
   });
-
 
   const [semester, setSemester] = useState('Fall 2025');
   const [course, setCourse] = useState('course 1');
@@ -206,7 +205,7 @@ function App() {
       setViewMode('dashboard')
     }
       
-  },[semester])
+  },[semester ])
 
   return (
     <div id='root'>
@@ -274,7 +273,7 @@ function App() {
         </Button>
 
         <Footer
-          choices={semesters[semester]}
+          choices={Object.keys(courseData).filter(x=>courseData[x].semester == semester).map(x=>courseData[x].name)}
           current={course}
           onClick={(selectedCourse) => {
             setCourse(selectedCourse);
