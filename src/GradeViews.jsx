@@ -10,7 +10,7 @@ import {
   calculateOverallGPA,
   recommendFocusByPotential,
   recommendFocusByLowestGrade
-} from './gradeCalculator';
+} from './GradeCalculator';
 
 function GradeViews({ semester, selectedCourseName, courseData, onBackToDashboard }) {
     const [openAssignDialog, setOpenAssignDialog] = useState(false);
