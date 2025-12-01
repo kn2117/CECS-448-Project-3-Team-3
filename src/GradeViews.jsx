@@ -111,7 +111,7 @@ function GradeViews({ semester, selectedCourseName, courseData, onBackToDashboar
                         </div>
                         <div className="stat-card">
                             <span className="stat-label">Remaining Weight</span>
-                            <span className="stat-value">{selectedCourse.remainingWeight}%</span>
+                            <span className="stat-value">{selectedCourse.isWeighted?`${selectedCourse.remainingWeight}%`:'Weights are disbabled'}</span>
                         </div>
                     </div>
                 
