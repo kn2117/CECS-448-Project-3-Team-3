@@ -105,7 +105,7 @@ function CourseManagement({ open, onClose, edit=false, semesters, addCourse, cou
 
                                     <Grid item xs={5}>
                                         <TextField
-                                            label={cat.name == ""?"Category Name":cat.name}
+                                            label="Category Name"
                                             fullWidth
                                             value={cat.name}
                                             onChange={(e) =>
