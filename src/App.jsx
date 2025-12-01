@@ -17,7 +17,27 @@ function App() {
       semester: 'Fall 2025',
       isWeighted: true,
       categoryWeights: { "Homework": 30, "Quizzes": 20, "Exams": 50 },
-      assignments: [],
+      assignments: [ {
+        name: 'Homework 1',
+        score: 9,
+        maxScore: 10,
+        category: 'Homework',
+        dueDate: '2025-10-10'
+      },
+      {
+        name: 'Quiz 1',
+        score: 15,
+        maxScore: 20,
+        category: 'Quizzes',
+        dueDate: '2025-10-12'
+      },
+      {
+        name: 'Exam 1',
+        score: 40,
+        maxScore: 50,
+        category: 'Exams',
+        dueDate: '2025-10-20'
+      }],
       remainingWeight: 100
     },
     'test2': {
@@ -204,6 +224,7 @@ function App() {
           <Dashboard
             semester={semester}
             courseData={courseData}
+            selectedCourseName={course}  // Make sure 'course' is the correct course name
           />
         ) : (
           <GradeViews
