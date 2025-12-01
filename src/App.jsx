@@ -201,8 +201,11 @@ function App() {
     const found = Object.values(courseData).find(course =>{
       return course.semester === semester
     })
-    if(found)
+    if(found){
       setCourse(found.name)
+      setViewMode('dashboard')
+    }
+      
   },[semester])
 
   return (
@@ -236,6 +239,7 @@ function App() {
             semester={semester}
             courseData={courseData}
             selectedCourseName={course}  // Make sure 'course' is the correct course name
+            setViewMode={setViewMode}
           />
         ) : (
           <GradeViews
@@ -256,7 +260,7 @@ function App() {
           current={course}
           onClick={(selectedCourse) => {
             setCourse(selectedCourse);
-            setViewMode('courseDetail');
+            ///setViewMode('courseDetail');
           }}
         />
       </div>
