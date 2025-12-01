@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -51,7 +51,7 @@ function App() {
       remainingWeight: 100
     },
     'course 3': {
-      name: 'course 4',
+      name: 'course 3',
       semester: 'Spring 2025',
       isWeighted: true,
       categoryWeights: { "Labs": 40, "Midterm": 30, "Final": 30 },
@@ -90,6 +90,7 @@ function App() {
       setSemester(semesterName);
     }
   };
+
 
   const editSemester = function (oldName, newName) {
     if (oldName === newName) return; // No change
@@ -195,6 +196,14 @@ function App() {
     setSemester(semester);
     setCourse(courseName);
   };
+
+  useEffect(()=>{
+    const found = Object.values(courseData).find(course =>{
+      return course.semester === semester
+    })
+    if(found)
+      setCourse(found.name)
+  },[semester])
 
   return (
     <div id='root'>
