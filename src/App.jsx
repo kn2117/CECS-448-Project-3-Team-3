@@ -232,11 +232,29 @@ function App() {
       <div class='body'>
         {/*add body.jsx*/}
         {viewMode === 'dashboard' ? (
-          <Dashboard
-            semester={semester}
-            courseData={courseData}
-            selectedCourseName={course}  // Make sure 'course' is the correct course name
-          />
+         <Dashboard
+  semester={semester}
+  courseData={courseData}
+  selectedCourseName={course}
+  updateCourseAssignments={(courseName, newAssignment) => {
+  setCourseData(prev => {
+    const course = prev[courseName];
+    if (!course) return prev;
+
+    return {
+      ...prev,
+      [courseName]: {
+        ...course,
+        assignments: [
+          ...course.assignments,
+          { ...newAssignment } // Keep maxScore as entered
+        ]
+      }
+    };
+  });
+}}
+/>
+
         ) : (
           <GradeViews
             semester={semester}

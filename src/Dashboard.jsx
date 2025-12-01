@@ -6,11 +6,10 @@ import { Line } from 'react-chartjs-2'; // Line Chart
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from 'chart.js'; // Register Chart.js components
 import { 
   calculateWeightedGrade,
-  calculateUnweightedGrade,
   convertToLetterGrade,
-  convertToGPA
 } from './GradeCalculator';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import AssignmentManagement from './AssignmentManagement.jsx';
 
 
 // Register the necessary Chart.js components including ArcElement for Pie chart
@@ -24,38 +23,57 @@ ChartJS.register(
   Legend,
   ArcElement // Register ArcElement for Pie chart
 );
-// Dashboard Component
-function Dashboard({ semester, courseData, selectedCourseName }) {
-  // Get courses for the current semester
-  const coursesInSemester = Object.values(courseData).filter(
-    course => course.semester === semester
-  );
 
-  // Get the selected course data
-  const selectedCourseData = courseData[selectedCourseName] || coursesInSemester[0];
+function Dashboard({ semester, courseData, selectedCourseName, updateCourseAssignments }) {
+  const [openAssignmentDialog, setOpenAssignmentDialog] = useState(false);
+
+  const selectedCourseData = courseData[selectedCourseName];
 
   const weightedGrade = calculateWeightedGrade(selectedCourseData);
-  const unweightedGrade = calculateUnweightedGrade(selectedCourseData);
   const letterGrade = convertToLetterGrade(weightedGrade);
+
+  const handleAddAssignment = (assignment) => {
+    // Add the new assignment to the course
+    updateCourseAssignments(selectedCourseName, assignment);
+    setOpenAssignmentDialog(false);
+  };
 
   return (
     <div className="dashboard-root">
       <h1 className="dashboard-header">{selectedCourseData.name} Dashboard</h1>
       <div className="dashboard-container">
-        <Assignments courseAssignments={selectedCourseData.assignments} />
-        <GradePieChart weights={selectedCourseData.categoryWeights} weightedGrade={weightedGrade} letterGrade={letterGrade} />
-        <GradeLineChart assignments={selectedCourseData.assignments} categoryWeights={selectedCourseData.categoryWeights} />
+        <Assignments
+          courseAssignments={selectedCourseData.assignments}
+          onAddClick={() => setOpenAssignmentDialog(true)}
+        />
+        <GradePieChart
+          weights={selectedCourseData.categoryWeights}
+          weightedGrade={weightedGrade}
+          letterGrade={letterGrade}
+        />
+        <GradeLineChart
+          assignments={selectedCourseData.assignments}
+          categoryWeights={selectedCourseData.categoryWeights}
+        />
       </div>
+
+      {/* AssignmentManagement Dialog */}
+      <AssignmentManagement
+        open={openAssignmentDialog}
+        onClose={() => setOpenAssignmentDialog(false)}
+        onAdd={handleAddAssignment}
+        isWeighted={selectedCourseData.isWeighted}
+        AssignCat={Object.keys(selectedCourseData.categoryWeights)}
+      />
     </div>
   );
 }
 
-// Assignments Component
-function Assignments({ courseAssignments }) {
+function Assignments({ courseAssignments, onAddClick }) {
   return (
     <div className="assignments">
-      <h2 className="assignments-header">
-        <div></div>
+      <h2 className="assignments-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div></div>    
         Assignments
         <Button
           style={{
@@ -65,6 +83,7 @@ function Assignments({ courseAssignments }) {
             height: '75%',
             fontWeight: 'normal',
           }}
+          onClick={onAddClick}
         >
           +
         </Button>
