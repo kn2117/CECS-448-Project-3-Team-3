@@ -17,8 +17,30 @@ function App() {
       semester: 'Fall 2025',
       isWeighted: true,
       categoryWeights: { "Homework": 30, "Quizzes": 20, "Exams": 50 },
-      assignments: [],
-      remainingWeight: 100
+      assignments: [
+        {
+          name:"Homework 1",
+          category:'Homework',
+          score:20,
+          maxScore:20,
+          dueDate:'11/12/2025'
+        },
+        {
+          name:"quiz 1",
+          category:'Quizzes',
+          score:20,
+          maxScore:20,
+          dueDate:'11/13/2025'
+        },
+        {
+          name:"Test 1",
+          category:'Exams',
+          score:15,
+          maxScore:20,
+          dueDate:'11/15/2025'
+        },
+      ],
+      remainingWeight: 0
     },
     'course 2': {
       name: 'course 2',
