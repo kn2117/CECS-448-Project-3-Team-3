@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
-import { Button } from '@mui/material';
+import { backdropClasses, Button } from '@mui/material';
 import { Pie } from 'react-chartjs-2'; // Pie Chart
 import { Line } from 'react-chartjs-2'; // Line Chart
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from 'chart.js'; // Register Chart.js components
@@ -25,7 +25,7 @@ ChartJS.register(
   ArcElement // Register ArcElement for Pie chart
 );
 // Dashboard Component
-function Dashboard({ semester, courseData, selectedCourseName }) {
+function Dashboard({ semester, courseData, selectedCourseName, setViewMode}) {
   // Get courses for the current semester
   const coursesInSemester = Object.values(courseData).filter(
     course => course.semester === semester
@@ -40,7 +40,14 @@ function Dashboard({ semester, courseData, selectedCourseName }) {
 
   return (
     <div className="dashboard-root">
-      <h1 className="dashboard-header">{selectedCourseData.name} Dashboard</h1>
+      <div style={{display:'flex', flexDirection:'flex-row', justifySelf:'center', height:'10%'}}>
+        <h1 className="dashboard-header">{selectedCourseData.name} Dashboard</h1>
+        <button className="back-button" style={{height:'50%', alignSelf:'center', marginLeft:10}} onClick={()=>setViewMode('courseDetail')}
+        >
+          Details →
+        </button>
+      </div>
+      
       <div className="dashboard-container">
         <Assignments courseAssignments={selectedCourseData.assignments} />
         <GradePieChart weights={selectedCourseData.categoryWeights} weightedGrade={weightedGrade} letterGrade={letterGrade} />
@@ -164,7 +171,7 @@ function GradeLineChart({ assignments, categoryWeights, minGrade = 70 }) {
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     scales: {
       y: {
         min: minGrade,  // Minimum Y-axis value
@@ -192,9 +199,9 @@ function GradeLineChart({ assignments, categoryWeights, minGrade = 70 }) {
   };
 
   return (
-    <div className="grade-line-chart" style={{ height: '300px' }}>
+    <div className="grade-line-chart" style={{ height: 'auto'}}>
       <h2 className="grade-line-chart-header">Grade Over Time</h2>
-      <Line data={chartData} options={chartOptions} />
+      <Line data={chartData} options={chartOptions} style={{padding:10}}/>
     </div>
   );
 }
