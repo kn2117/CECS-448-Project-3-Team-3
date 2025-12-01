@@ -46,11 +46,12 @@ function App() {
     }
   });
 
-  // Get semesters list from courseData
+  // Derive semesters list from courseData
   const [semesters, setSemesters] = useState({
     'Fall 2025': ['test1', 'test2'],
     'Spring 2025': ['test3', 'test4']
   });
+
 
   const [semester, setSemester] = useState('Fall 2025');
   const [course, setCourse] = useState('test1');
@@ -168,7 +169,6 @@ function App() {
       updated[semester] = [...updated[semester], courseName];
       return updated;
     });
-
     // Set as current course
     setSemester(semester);
     setCourse(courseName);

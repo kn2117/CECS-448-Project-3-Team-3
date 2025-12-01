@@ -1,7 +1,78 @@
-.dashboard {
-    padding: 20px;
-}
 
 .dashboard h1 {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
+}
+
+.dashboard-header {
+    text-align: center;
+    font-weight: bold
+}
+
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+.assignments, .grade-pie-chart, .grade-line-chart {
+    background-color: #f9f9f9;
+    margin-top: 5%;
+    border: 1px solid black;
+    width : 30%;
+    height: auto;
+}
+
+.grade-pie-chart{
+    width:15%
+}
+
+.assignments-header, .grade-pie-chart-header, .grade-line-chart-header {
+    display: flex;
+    text-align: center;
+    background-color: lightgrey;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    justify-content: space-between;
+    font-weight: normal;
+    margin: auto;
+    border: 1px solid black;
+    font-size: 2em;
+}
+
+.assignments-table {
+    max-height: 10%;
+    overflow-y: auto;
+    background-color: white;
+    margin-top: 0px;
+}
+
+table {
+    position: sticky;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid black;
+  text-align: center;
+  align-items: center;
+}
+
+.grade-pie-chart-header, .grade-line-chart-header {
+  justify-content: center;
+}
+
+.grade-pie-grades {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border: 1px solid black;
 }
