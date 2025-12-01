@@ -12,32 +12,32 @@ import Dropdown from './dropdown'
 function App() {
   const [viewMode, setViewMode] = useState('dashboard');
   const [courseData, setCourseData] = useState({
-    'test1': {
-      name: 'test1',
+    'course 1': {
+      name: 'course 1',
       semester: 'Fall 2025',
       isWeighted: true,
       categoryWeights: { "Homework": 30, "Quizzes": 20, "Exams": 50 },
       assignments: [],
       remainingWeight: 100
     },
-    'test2': {
-      name: 'test2',
+    'course 2': {
+      name: 'course 2',
       semester: 'Fall 2025',
       isWeighted: false,
       categoryWeights: {},
       assignments: [],
       remainingWeight: 100
     },
-    'test3': {
-      name: 'test3',
+    'course 3': {
+      name: 'course 4',
       semester: 'Spring 2025',
       isWeighted: true,
       categoryWeights: { "Labs": 40, "Midterm": 30, "Final": 30 },
       assignments: [],
       remainingWeight: 100
     },
-    'test4': {
-      name: 'test4',
+    'course 4': {
+      name: 'course 4',
       semester: 'Spring 2025',
       isWeighted: false,
       categoryWeights: {},
@@ -48,12 +48,12 @@ function App() {
 
   // Get semesters list from courseData
   const [semesters, setSemesters] = useState({
-    'Fall 2025': ['test1', 'test2'],
-    'Spring 2025': ['test3', 'test4']
+    'Fall 2025': ['course 1', 'course 2'],
+    'Spring 2025': ['course 3', 'course 4']
   });
 
   const [semester, setSemester] = useState('Fall 2025');
-  const [course, setCourse] = useState('test1');
+  const [course, setCourse] = useState('course 1');
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState("add");
   const [openSemesterDialog, setOpenSemesterDialog] = useState(false);
@@ -228,7 +228,7 @@ function App() {
           }}
         />
       </div>
-      <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} addCourse={addCourse} />
+      <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} addCourse={addCourse} courseData={courseData[course]}/>
       <SemesterManagement
         open={openSemesterDialog}
         onClose={() => setOpenSemesterDialog(false)}
