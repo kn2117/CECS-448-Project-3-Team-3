@@ -1,0 +1,37 @@
+/* Overall form layout inside dialog */
+.assignmentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* Due date section title */
+.dueDateTitle {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* Due date row layout */
+.dueDateRow {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* Each due date input container */
+.dueDateField {
+  width: 30%;
+}
+
+/* Bottom buttons container */
+.assignmentButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Space between buttons */
+.assignmentButtons button {
+  margin: 0 10px;
+}
