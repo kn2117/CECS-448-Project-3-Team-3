@@ -2,6 +2,7 @@ import * as React from 'react';
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import "./AssignmentManagement.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from '@mui/material/Box';
@@ -13,7 +14,7 @@ import { Grid } from '@mui/material';
 
 function AssignmentManagement({open, onClose, onAdd}) {
     const [assignmentName, setAssignmentName] = React.useState("");
-    const [categoryName, setCategoryName] = React.useState("");
+    const [category, setCategory] = React.useState("");
     const [score, setScore] = React.useState("");
     const [month, setMonth] = React.useState("");
     const [day, setDay] = React.useState("");
