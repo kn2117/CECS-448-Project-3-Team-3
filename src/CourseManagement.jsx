@@ -38,7 +38,7 @@ function CourseManagement({ open, onClose, edit, semesters, addCourse }) {
     };
 
     const handleSave = (semester, courseName) => {
-        addCourse(semester, courseName)
+        addCourse(semester, courseName, categories)
         onClose()
     };
 

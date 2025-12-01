@@ -12,19 +12,14 @@ function Dropdown({current, choices, onClick}){
     const handle = (event) =>{
         onClick(event.target.value)
     }
-    const  style = 
-        {
-            height:'100%', width:'10%', 
-            fontSize:24, backgroundColor:'#D9D9D9', color:'black',
-            borderRight:'2px solid black', minWidth:'150px'
-        }
-
     return(
-        <select value={current} onChange={handle} style={style}> 
-            {items.map(element => (
-                <option key={element} value ={element} style={{backgroundColor:'white', color:'black'}}>
-                    {element}
-                </option>
+        <select value={current} onChange={handle} style={{height:'100%', width:'fit-content', 
+            fontSize:24, backgroundColor:'#D9D9D9', color:'black',
+            borderRight:'2px solid black'}}> 
+                {items.map(element => (
+                    <option key={element} value ={element} style={{backgroundColor:'white', color:'black'}}>
+                        {element}
+                    </option>
                 ))
             }
         </select>
