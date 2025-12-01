@@ -15,21 +15,33 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
-function CourseManagement({ open, onClose, edit, semesters, addCourse, courseData }) {
+function CourseManagement({ open, onClose, edit=false, semesters, addCourse, courseData }) {
     const [courseName, setCourseName] = React.useState('');
     const [semester, setSemester] = React.useState('');
     const [categories, setCategories] = React.useState([
         { name: "", weight: "" }
     ]);
+    
+    React.useEffect(()=>{
+        setCourseName('')
+        setSemester('')
+        setCategories(
+        [{ name: "", weight: "" }])
+    },[edit])
 
     React.useEffect(()=>{
-        setCourseName(courseData.name)
-        setSemester(courseData.semester)
-        setCategories(Object.keys(courseData.categoryWeights).map(key=> {return {
-            name:key ,
-            weight:courseData.categoryWeights[key],
-        }}))
-    },[courseData])
+        if(edit){
+            setCourseName(courseData.name)
+            setSemester(courseData.semester)
+            setCategories(Object.keys(courseData.categoryWeights).map(key=> {return {
+                name:key ,  
+                weight:courseData.categoryWeights[key],
+            }}))  
+        }
+             
+    },[courseData, edit])
+
+
 
     const handleChangeSemester = (event) => {
         setSemester(event.target.value);
@@ -69,7 +81,7 @@ function CourseManagement({ open, onClose, edit, semesters, addCourse, courseDat
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <div className="firstLine">
-                        <TextField className="courseName" label={`${courseName}`} onChange={handleChangeCourseName} />
+                        <TextField className="courseName" label={`${courseName ==""?'Course name':courseName}`} onChange={handleChangeCourseName} />
                         <Box sx={{ display: "inline-block", minWidth: 200 }} className="semesterSelect">
                             <FormControl fullWidth>
                                 <InputLabel>Select a Semester</InputLabel>
@@ -93,7 +105,7 @@ function CourseManagement({ open, onClose, edit, semesters, addCourse, courseDat
 
                                     <Grid item xs={5}>
                                         <TextField
-                                            label={cat.name}
+                                            label={cat.name == ""?"Category Name":cat.name}
                                             fullWidth
                                             value={cat.name}
                                             onChange={(e) =>
