@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import CourseManagement from './CourseManagement'
+import SemesterManagement from './SemesterManagement'
 import GradeViews from './GradeViews'
 import Dashboard from './Dashboard'
 import { Button } from '@mui/material'
@@ -45,7 +46,7 @@ function App() {
     }
   });
 
-  // Derive semesters list from courseData
+  // Get semesters list from courseData
   const [semesters, setSemesters] = useState({
     'Fall 2025': ['test1', 'test2'],
     'Spring 2025': ['test3', 'test4']
@@ -55,6 +56,77 @@ function App() {
   const [course, setCourse] = useState('test1');
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogMode, setDialogMode] = useState("add");
+  const [openSemesterDialog, setOpenSemesterDialog] = useState(false);
+  const [semesterDialogMode, setSemesterDialogMode] = useState("add");
+
+  const addSemester = function (semesterName) {
+    if (!semesters[semesterName]) {
+      setSemesters(prev => ({
+        ...prev,
+        [semesterName]: []
+      }));
+      setSemester(semesterName);
+    }
+  };
+
+  const editSemester = function (oldName, newName) {
+    if (oldName === newName) return; // No change
+
+    // Update semesters list
+    setSemesters(prev => {
+      const updated = { ...prev };
+      updated[newName] = updated[oldName]; // Copy courses to new name
+      delete updated[oldName]; // Remove old name
+      return updated;
+    });
+
+    // Update courseData to point to new semester
+    setCourseData(prev => {
+      const updated = { ...prev };
+      Object.keys(updated).forEach(courseKey => {
+        if (updated[courseKey].semester === oldName) {
+          updated[courseKey] = {
+            ...updated[courseKey],
+            semester: newName
+          };
+        }
+      });
+      return updated;
+    });
+
+    // Update current semester if it was the one being edited
+    if (semester === oldName) {
+      setSemester(newName);
+    }
+  };
+
+  const deleteSemester = function (semesterName) {
+    // Remove semester from semesters list
+    setSemesters(prev => {
+      const updated = { ...prev };
+      delete updated[semesterName];
+      return updated;
+    });
+
+    // Remove all courses from that semester
+    setCourseData(prev => {
+      const updated = { ...prev };
+      Object.keys(updated).forEach(courseKey => {
+        if (updated[courseKey].semester === semesterName) {
+          delete updated[courseKey];
+        }
+      });
+      return updated;
+    });
+
+    // Switch to another semester if the deleted one was selected
+    if (semester === semesterName) {
+      const remainingSemesters = Object.keys(semesters).filter(s => s !== semesterName);
+      if (remainingSemesters.length > 0) {
+        setSemester(remainingSemesters[0]);
+      }
+    }
+  };
 
   const addCourse = function (semester, courseName, categories) {
     // Determine if weighted based on whether categories are provided
@@ -107,8 +179,22 @@ function App() {
       <div class='header'>
         {/*add header.jsx*/}
         {/*Testing */}
-        <Dropdown choices={Object.keys(semesters)} current={semester} onClick={setSemester} />
-        <Button style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '75%' }} onClick={() => { setOpenDialog(true); setDialogMode("edit") }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '10px' }}>
+          <Dropdown choices={Object.keys(semesters)} current={semester} onClick={setSemester} />
+          <Button
+            style={{ fontSize: '24px', color: 'black', border: '2px solid black', borderRadius: 10, height: '40px', minWidth: '40px', padding: '0' }}
+            onClick={() => { setOpenSemesterDialog(true); setSemesterDialogMode("add"); }}
+          >
+            +
+          </Button>
+          <Button
+            style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '40px' }}
+            onClick={() => { setOpenSemesterDialog(true); setSemesterDialogMode("edit"); }}
+          >
+            Edit Semester
+          </Button>
+        </div>
+        <Button style={{ fontSize: '16px', color: 'black', border: '2px solid black', borderRadius: 10, height: '75%', marginRight: '10px' }} onClick={() => { setOpenDialog(true); setDialogMode("edit") }}>
           Edit Course
         </Button>
       </div>
@@ -143,6 +229,16 @@ function App() {
         />
       </div>
       <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} addCourse={addCourse} />
+      <SemesterManagement
+        open={openSemesterDialog}
+        onClose={() => setOpenSemesterDialog(false)}
+        addSemester={addSemester}
+        editSemester={editSemester}
+        deleteSemester={deleteSemester}
+        existingSemesters={semesters}
+        currentSemester={semester}
+        edit={semesterDialogMode === "edit"}
+      />
     </div>
   )
 }
