@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import CourseManagement from './CourseManagement'
+import AssignmentManagement from './AssignmentManagement'
 import SemesterManagement from './SemesterManagement'
 import GradeViews from './GradeViews'
 import Dashboard from './Dashboard'
@@ -55,9 +56,15 @@ function App() {
   const [semester, setSemester] = useState('Fall 2025');
   const [course, setCourse] = useState('test1');
   const [openDialog, setOpenDialog] = useState(false);
+  const [assignments, setAssignments] = useState([]);
   const [dialogMode, setDialogMode] = useState("add");
   const [openSemesterDialog, setOpenSemesterDialog] = useState(false);
   const [semesterDialogMode, setSemesterDialogMode] = useState("add");
+
+  const handleAddAssignment = (newAssignment) => {
+    // Save the new assignment to state
+    setAssignments((prev) => [...prev, newAssignment]);
+  };
 
   const addSemester = function (semesterName) {
     if (!semesters[semesterName]) {
@@ -214,8 +221,34 @@ function App() {
           />
         )}
       </div>
+      <div>
+      <h1>My Assignments</h1>
+
+      {/* Button to open dialog */}
+      <Button variant="contained" onClick={() => setOpenDialog(true)}>
+        Add Assignment
+      </Button>
+
+      {/* The dialog component */}
+      <AssignmentManagement
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        onAdd={handleAddAssignment}
+      />
+
+      {/* Display saved assignments */}
+      <ul>
+        {assignments.map((a, i) => (
+          <li key={i}>
+            {a.name} – {a.category} – {a.score} – {a.dueDate}
+          </li>
+        ))}
+      </ul>
+    </div>
       <div class='footer'>
-        <Button style={{ fontSize: '24px', color: 'black', borderRight: '2px solid black', borderRadius: 0, height: '100%' }} onClick={() => { setOpenDialog(true); setDialogMode("add"); }}>
+        <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} />
+  
+        <Button style={{fontSize:'24px', color:'black', borderRight:'2px solid black', borderRadius:0, height:'100%'}} onClick={() => setOpenDialog(true)}>
           +
         </Button>
 
@@ -229,6 +262,7 @@ function App() {
         />
       </div>
       <CourseManagement open={openDialog} onClose={() => setOpenDialog(false)} edit={dialogMode == "edit"} semesters={semesters} addCourse={addCourse} />
+      <AssignmentManagement open={openDialog} onClose={() => setOpenDialog(false)} onAdd={(data) => console.log(data)} />
       <SemesterManagement
         open={openSemesterDialog}
         onClose={() => setOpenSemesterDialog(false)}
