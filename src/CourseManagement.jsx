@@ -15,12 +15,21 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 
-function CourseManagement({ open, onClose, edit, semesters, addCourse }) {
+function CourseManagement({ open, onClose, edit, semesters, addCourse, courseData }) {
     const [courseName, setCourseName] = React.useState('');
     const [semester, setSemester] = React.useState('');
     const [categories, setCategories] = React.useState([
         { name: "", weight: "" }
     ]);
+
+    React.useEffect(()=>{
+        setCourseName(courseData.name)
+        setSemester(courseData.semester)
+        setCategories(Object.keys(courseData.categoryWeights).map(key=> {return {
+            name:key ,
+            weight:courseData.categoryWeights[key],
+        }}))
+    },[courseData])
 
     const handleChangeSemester = (event) => {
         setSemester(event.target.value);
@@ -60,7 +69,7 @@ function CourseManagement({ open, onClose, edit, semesters, addCourse }) {
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <div className="firstLine">
-                        <TextField className="courseName" label="Course Name" onChange={handleChangeCourseName} />
+                        <TextField className="courseName" label={`${courseName}`} onChange={handleChangeCourseName} />
                         <Box sx={{ display: "inline-block", minWidth: 200 }} className="semesterSelect">
                             <FormControl fullWidth>
                                 <InputLabel>Select a Semester</InputLabel>
@@ -76,51 +85,53 @@ function CourseManagement({ open, onClose, edit, semesters, addCourse }) {
                             </FormControl>
                         </Box>
                     </div>
-                    <p>Categories</p>
-                    <Box sx={{ width: "100%", maxWidth: 600 }} className="categories">
-                        {categories.map((cat, i) => (
-                            <Grid container spacing={2} key={i} sx={{ mb: 2 }} alignItems="center">
+                    <div>
+                       <p>Categories</p>
+                        <Box sx={{ width: "100%", maxWidth: 600 }} className="categories">
+                            {categories.map((cat, i) => (
+                                <Grid container spacing={2} key={i} sx={{ mb: 2 }} alignItems="center">
 
-                                <Grid item xs={5}>
-                                    <TextField
-                                        label="Category Name"
-                                        fullWidth
-                                        value={cat.name}
-                                        onChange={(e) =>
-                                            handleChangeCategories(i, "name", e.target.value)
-                                        }
-                                    />
+                                    <Grid item xs={5}>
+                                        <TextField
+                                            label={cat.name}
+                                            fullWidth
+                                            value={cat.name}
+                                            onChange={(e) =>
+                                                handleChangeCategories(i, "name", e.target.value)
+                                            }
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={5}>
+                                        <TextField
+                                            label="Weight"
+                                            fullWidth
+                                            value={cat.weight}
+                                            onChange={(e) =>
+                                                handleChangeCategories(i, "weight", e.target.value)
+                                            }
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={2}>
+                                        <IconButton
+                                            color="error"
+                                            onClick={() => deleteCategory(i)}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Grid>
                                 </Grid>
+                            ))}
 
-                                <Grid item xs={5}>
-                                    <TextField
-                                        label="Weight"
-                                        fullWidth
-                                        value={cat.weight}
-                                        onChange={(e) =>
-                                            handleChangeCategories(i, "weight", e.target.value)
-                                        }
-                                    />
-                                </Grid>
-
-                                <Grid item xs={2}>
-                                    <IconButton
-                                        color="error"
-                                        onClick={() => deleteCategory(i)}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
-                        ))}
-
-                        <Box className="addButtonContainer">
-                            <Button variant="contained" onClick={addCategory}>
-                                Add Category
-                                <AddIcon />
-                            </Button>
+                            <Box className="addButtonContainer">
+                                <Button variant="contained" onClick={addCategory}>
+                                    Add Category
+                                    <AddIcon />
+                                </Button>
+                            </Box>
                         </Box>
-                    </Box>
+                    </div>
                     <div className="buttons">
                         {edit && (
                             <Button variant="contained" color="error" style={{ minWidth: '100px' }} onClick={onClose}>
