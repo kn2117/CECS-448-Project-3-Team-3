@@ -15,7 +15,7 @@ function Dropdown({current, choices, onClick}){
     return(
         <select value={current} onChange={handle} style={{height:'100%', width:'fit-content', 
             fontSize:24, backgroundColor:'#D9D9D9', color:'black',
-            borderRight:'2px solid black'}}> 
+            borderRight:'2px solid black', minWidth:'100px'}}> 
                 {items.map(element => (
                     <option key={element} value ={element} style={{backgroundColor:'white', color:'black'}}>
                         {element}
